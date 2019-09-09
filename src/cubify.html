@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Cubify</title>
+    <script src="js/cubify.js"></script>
+  </head>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-family: Arial;
+    }
+    .cubify-test {
+      background-color: #670000;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+  <body>
+    <div class="wrapper">
+      <div
+        class="cubify-test cubify-test-front"
+        style="width: 240px;height: 210px;"
+      >
+        TEST-front
+      </div>
+      <div
+        class="cubify-test cubify-test-back"
+        style="width: 260px;height: 230px;"
+      >
+        TEST-back
+      </div>
+      <div
+        class="cubify-test cubify-test-top"
+        style="width: 300px;height: 200px;"
+      >
+        TEST-top
+      </div>
+      <div
+        class="cubify-test cubify-test-bottom"
+        style="width: 200px;height: 300px;"
+      >
+        TEST-bottom
+      </div>
+      <div
+        class="cubify-test cubify-test-left"
+        style="width: 200px;height: 200px;"
+      >
+        TEST-left
+      </div>
+      <div
+        class="cubify-test cubify-test-right"
+        style="width: 200px;height: 200px;"
+      >
+        TEST-right
+      </div>
+    </div>
+
+    <script>
+      (function() {
+        const front = document.querySelector(".cubify-test-front");
+        const back = document.querySelector(".cubify-test-back");
+        const topFace = document.querySelector(".cubify-test-top");
+        const left = document.querySelector(".cubify-test-left");
+        const right = document.querySelector(".cubify-test-right");
+        const bottom = document.querySelector(".cubify-test-bottom");
+
+        const cubeTest = new Cubify(front, {
+          faces: {
+            back: back,
+            top: topFace,
+            left: left,
+            right: right,
+            bottom: bottom
+          },
+          interactive: true
+        });
+        console.trace(top, topFace);
+      })();
+    </script>
+  </body>
+</html>
