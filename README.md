@@ -41,4 +41,4 @@ Option to allow user rotation of the cube via mouse. Default - **false**
 
 ### width
 
-The width (and, since it'sm you know - a cube - height and depth) of the cube. Default - largest dimension (meaning height of width) of all passed DIVs; 
+The width (and, since it's, you know - a cube - height and depth) of the cube. Default - largest dimension (meaning height or width) of all passed DIVs; 
