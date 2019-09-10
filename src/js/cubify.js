@@ -16,7 +16,7 @@
         height: `${this.width}px`
       };
       this.sceneStyle = {
-        perspective: `${this.width}px`
+        perspective: `${this.width * 4}px`
       };
       this.faceStyle = {
         position: "absolute",
@@ -29,11 +29,11 @@
         "transform-style": `preserve-3d`
       };
       this.interactive = options.interactive;
+      this.renderCube();
       if (options.interactive) {
         (this.angleX = 0), (this.angleY = 0);
+        this.setUpListeners();
       }
-      this.renderCube();
-      this.setUpListeners();
     }
     getBackgroundColor() {
       return window
