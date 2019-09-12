@@ -22,7 +22,6 @@
         position: "absolute",
         top: 0,
         left: 0,
-        "background-color": this.bgColor
       };
       this.cubeStyle = {
         transform: `translateZ(-${this.width / 2}px)`,
