@@ -2,6 +2,8 @@
 
 ## Make your DIVs into 3d cubes
 
+You can see simple demo on a project's [webpage](https://marvinjan.github.io/cubify/cubify)
+
 This plugin allows to bundle up to 6 (obviously :) ) DIVs into one 3d interactive cube!
 
 ## Usage
