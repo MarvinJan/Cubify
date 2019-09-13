@@ -1,4 +1,5 @@
 (function() {
+  "use strict";
   class Cubify {
     constructor(
       front,
@@ -21,7 +22,7 @@
       this.faceStyle = {
         position: "absolute",
         top: 0,
-        left: 0,
+        left: 0
       };
       this.cubeStyle = {
         transform: `translateZ(-${this.width / 2}px)`,
@@ -123,43 +124,72 @@
       this.parent.append(this.composeCube());
     }
     rotateCube(event, x, y) {
-      const deltaX = this.calculateDelta(x, event.clientX);
-      const deltaY = this.calculateDelta(y, event.clientY);
+      let deltaX;
+      let deltaY;
+      if (
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          navigator.userAgent
+        )
+      ) {
+        deltaX = x - event.touches[0].clientX;
+        deltaY = y - event.touches[0].clientY;
+      } else {
+        deltaX = x - event.clientX;
+        deltaY = y - event.clientY;
+      }
       const deltaAngleX = this.angleX - deltaX / 2;
       const deltaAngleY = this.angleY + deltaY / 2;
       this.cube.style.transform = `translateZ(-${this.width /
         2}px) rotateY(${deltaAngleX}deg) rotateX(${deltaAngleY}deg)`;
       return [deltaAngleX, deltaAngleY];
     }
-    calculateDelta(initial, current) {
-      return initial - current;
-    }
+
     setAngles(deltaAngleX, deltaAngleY) {
       this.angleX = deltaAngleX;
       this.angleY = deltaAngleY;
     }
-    removeListener(element, listener, callback) {
-      element.removeEventListener(listener, callback);
-    }
     setUpListeners() {
-      this.cube.addEventListener("mousedown", e => {
-        e.preventDefault();
-        const x0 = e.clientX;
-        const y0 = e.clientY;
-        let deltaAngles;
-        const rotate = event => {
-          deltaAngles = this.rotateCube(event, x0, y0);
-          return this.rotateCube(event, x0, y0);
-        };
-        rotate(e, x0, y0);
-        const onDone = () => {
-          this.setAngles(...deltaAngles);
-          document.removeEventListener("mousemove", rotate);
-          document.removeEventListener("mouseup", onDone);
-        };
-        document.addEventListener("mousemove", rotate);
-        document.addEventListener("mouseup", onDone);
-      });
+      if (
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          navigator.userAgent
+        )
+      ) {
+        this.cube.addEventListener("touchstart", e => {
+          e.preventDefault();
+          const x0 = e.touches[0].clientX;
+          const y0 = e.touches[0].clientY;
+          let deltaAngles;
+          const rotate = event => {
+            deltaAngles = this.rotateCube(event, x0, y0);
+            return this.rotateCube(event, x0, y0);
+          };
+          const onDone = () => {
+            this.setAngles(...deltaAngles);
+            document.removeEventListener("touchmove", rotate);
+            document.removeEventListener("touchend", onDone);
+          };
+          document.addEventListener("touchmove", rotate);
+          document.addEventListener("touchend", onDone);
+        });
+      } else {
+        this.cube.addEventListener("mousedown", e => {
+          e.preventDefault();
+          const x0 = e.clientX;
+          const y0 = e.clientY;
+          let deltaAngles;
+          const rotate = event => {
+            deltaAngles = this.rotateCube(event, x0, y0);
+            return this.rotateCube(event, x0, y0);
+          };
+          const onDone = () => {
+            this.setAngles(...deltaAngles);
+            document.removeEventListener("mousemove", rotate);
+            document.removeEventListener("mouseup", onDone);
+          };
+          document.addEventListener("mousemove", rotate);
+          document.addEventListener("mouseup", onDone);
+        });
+      }
     }
   }
   window.Cubify = Cubify;
