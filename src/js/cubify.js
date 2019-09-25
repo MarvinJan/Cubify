@@ -154,6 +154,7 @@ class Cubify {
         const y0 = e.touches[0].clientY;
         let deltaAngles;
         const rotate = event => {
+          event.preventDefault();
           deltaAngles = this.rotateCube(event, x0, y0);
           return this.rotateCube(event, x0, y0);
         };
@@ -162,7 +163,7 @@ class Cubify {
           document.removeEventListener("touchmove", rotate);
           document.removeEventListener("touchend", onDone);
         };
-        document.addEventListener("touchmove", rotate);
+        document.addEventListener("touchmove", rotate, { passive: false });
         document.addEventListener("touchend", onDone);
       });
     } else {
