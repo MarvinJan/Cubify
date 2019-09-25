@@ -148,24 +148,28 @@ class Cubify {
         navigator.userAgent
       )
     ) {
-      this.cube.addEventListener("touchstart", e => {
-        e.preventDefault();
-        const x0 = e.touches[0].clientX;
-        const y0 = e.touches[0].clientY;
-        let deltaAngles;
-        const rotate = event => {
-          event.preventDefault();
-          deltaAngles = this.rotateCube(event, x0, y0);
-          return this.rotateCube(event, x0, y0);
-        };
-        const onDone = () => {
-          this.setAngles(...deltaAngles);
-          document.removeEventListener("touchmove", rotate);
-          document.removeEventListener("touchend", onDone);
-        };
-        document.addEventListener("touchmove", rotate, { passive: false });
-        document.addEventListener("touchend", onDone);
-      });
+      this.cube.addEventListener(
+        "touchstart",
+        e => {
+          e.preventDefault();
+          const x0 = e.touches[0].clientX;
+          const y0 = e.touches[0].clientY;
+          let deltaAngles;
+          const rotate = event => {
+            event.preventDefault();
+            deltaAngles = this.rotateCube(event, x0, y0);
+            return this.rotateCube(event, x0, y0);
+          };
+          const onDone = () => {
+            this.setAngles(...deltaAngles);
+            document.removeEventListener("touchmove", rotate);
+            document.removeEventListener("touchend", onDone);
+          };
+          document.addEventListener("touchmove", rotate, { passive: false });
+          document.addEventListener("touchend", onDone);
+        },
+        { passive: false }
+      );
     } else {
       this.cube.addEventListener("mousedown", e => {
         e.preventDefault();
@@ -177,7 +181,7 @@ class Cubify {
           return this.rotateCube(event, x0, y0);
         };
         const onDone = () => {
-          this.setAngles(...deltaAngles);
+          if (deltaAngles) this.setAngles(...deltaAngles);
           document.removeEventListener("mousemove", rotate);
           document.removeEventListener("mouseup", onDone);
         };
