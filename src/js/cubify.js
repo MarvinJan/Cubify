@@ -120,11 +120,8 @@ class Cubify {
   rotateCube(event, x, y) {
     let deltaX;
     let deltaY;
-    if (
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        navigator.userAgent
-      )
-    ) {
+    console.log();
+    if (event.type === "touchmove") {
       deltaX = x - event.touches[0].clientX;
       deltaY = y - event.touches[0].clientY;
     } else {
@@ -156,7 +153,7 @@ class Cubify {
           return this.rotateCube(event, x0, y0);
         };
         const onDone = () => {
-          this.setAngles(...deltaAngles);
+          if (deltaAngles) this.setAngles(...deltaAngles);
           document.removeEventListener("touchmove", rotate);
           document.removeEventListener("touchend", onDone);
         };
@@ -172,6 +169,7 @@ class Cubify {
       const y0 = e.clientY;
       let deltaAngles;
       const rotate = event => {
+        event.preventDefault();
         deltaAngles = this.rotateCube(event, x0, y0);
         return this.rotateCube(event, x0, y0);
       };
