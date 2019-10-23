@@ -10,6 +10,8 @@ class Cubify {
     this.width = options.width || this.getDefaultWidth();
     this.parent = this.front.parentNode;
     this.bgColor = this.getBackgroundColor();
+    this.onlyX = options.onlyX || false;
+    this.onlyY = !!options.onlyX ? false : options.onlyY || false;
     this.commonStyle = {
       width: `${this.width}px`,
       height: `${this.width}px`
@@ -118,15 +120,15 @@ class Cubify {
     this.parent.append(this.composeCube());
   }
   rotateCube(event, x, y) {
-    let deltaX;
-    let deltaY;
-    console.log();
+    let deltaX = 0;
+    let deltaY = 0;
+
     if (event.type === "touchmove") {
-      deltaX = x - event.touches[0].clientX;
-      deltaY = y - event.touches[0].clientY;
+      if (!this.onlyY) deltaX = x - event.touches[0].clientX;
+      if (!this.onlyX) deltaY = y - event.touches[0].clientY;
     } else {
-      deltaX = x - event.clientX;
-      deltaY = y - event.clientY;
+      if (!this.onlyY) deltaX = x - event.clientX;
+      if (!this.onlyX) deltaY = y - event.clientY;
     }
     const deltaAngleX = this.angleX - deltaX / 2;
     const deltaAngleY = this.angleY + deltaY / 2;
@@ -136,8 +138,8 @@ class Cubify {
   }
 
   setAngles(deltaAngleX, deltaAngleY) {
-    this.angleX = deltaAngleX;
-    this.angleY = deltaAngleY;
+    if (!this.onlyY) this.angleX = deltaAngleX;
+    if (!this.onlyX) this.angleY = deltaAngleY;
   }
   setUpListeners() {
     this.cube.addEventListener(
