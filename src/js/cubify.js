@@ -120,6 +120,8 @@ class Cubify {
     this.parent.append(this.composeCube());
   }
   rotateCube(event, x, y) {
+    event.preventDefault();
+
     let deltaX = 0;
     let deltaY = 0;
 
@@ -149,13 +151,9 @@ class Cubify {
         const x0 = e.touches[0].clientX;
         const y0 = e.touches[0].clientY;
         let deltaAngles;
-        const rotate = event => {
-          event.preventDefault();
-          deltaAngles = this.rotateCube(event, x0, y0);
-          return this.rotateCube(event, x0, y0);
-        };
+        const rotate = event => (deltaAngles = this.rotateCube(event, x0, y0));
         const onDone = () => {
-          if (deltaAngles) this.setAngles(...deltaAngles);
+          if (!!deltaAngles) this.setAngles(...deltaAngles);
           document.removeEventListener("touchmove", rotate);
           document.removeEventListener("touchend", onDone);
         };
@@ -170,13 +168,9 @@ class Cubify {
       const x0 = e.clientX;
       const y0 = e.clientY;
       let deltaAngles;
-      const rotate = event => {
-        event.preventDefault();
-        deltaAngles = this.rotateCube(event, x0, y0);
-        return this.rotateCube(event, x0, y0);
-      };
+      const rotate = event => (deltaAngles = this.rotateCube(event, x0, y0));
       const onDone = () => {
-        if (deltaAngles) this.setAngles(...deltaAngles);
+        if (!!deltaAngles) this.setAngles(...deltaAngles);
         document.removeEventListener("mousemove", rotate);
         document.removeEventListener("mouseup", onDone);
       };
