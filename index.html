@@ -1,88 +1,334 @@
-<!DOCTYPE html><base href="public" />
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Cubify</title>
-    <script src="js/cubify.js"></script></head
-  ><style>
-    body {
-      margin: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      font-family: Arial;
-    }
-    .cubify-test {
-      background-color: #670000;
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  </style>
+    <title>Cubify - a JavaScript plugin</title>
+    <link rel="stylesheet" href="public/css/cubify.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Orbitron:400,500|Roboto&display=swap"
+      rel="stylesheet"
+    />
+    <link href="public/css/prism.css" rel="stylesheet" />
+    <script src="public/js/cubify.js"></script>
+  </head>
   <body>
-    <div class="wrapper">
-      <div
-        class="cubify-test cubify-test-front"
-        style="width: 240px;height: 210px;"
-      >
-        TEST-front
+    <header>
+      <div class="header__logo">
+        <div class="header__logo__face header__logo__q" data-priority="0">
+          Q
+        </div>
+        <div class="header__logo__face header__logo__b" data-priority="1">
+          B
+        </div>
+        <div class="header__logo__face header__logo__fy" data-priority="2">
+          Fy
+        </div>
       </div>
-      <div
-        class="cubify-test cubify-test-back"
-        style="width: 260px;height: 230px;"
-      >
-        TEST-back
-      </div>
-      <div
-        class="cubify-test cubify-test-top"
-        style="width: 300px;height: 200px;"
-      >
-        TEST-top
-      </div>
-      <div
-        class="cubify-test cubify-test-bottom"
-        style="width: 200px;height: 300px;"
-      >
-        TEST-bottom
-      </div>
-      <div
-        class="cubify-test cubify-test-left"
-        style="width: 200px;height: 200px;"
-      >
-        TEST-left
-      </div>
-      <div
-        class="cubify-test cubify-test-right"
-        style="width: 200px;height: 200px;"
-      >
-        TEST-right
-      </div>
-    </div>
-    <script>
-      (function() {
-        const front = document.querySelector(".cubify-test-front");
-        const back = document.querySelector(".cubify-test-back");
-        const topFace = document.querySelector(".cubify-test-top");
-        const left = document.querySelector(".cubify-test-left");
-        const right = document.querySelector(".cubify-test-right");
-        const bottom = document.querySelector(".cubify-test-bottom");
+      <div class="header__title"><h1>Cubify</h1></div>
+    </header>
+    <main>
+      <section class="intro">
+        <div class="container">
+          <h2>Cubify - a JavaScript plugin</h2>
+          <h3>Introduction</h3>
+          <p>
+            A JavaScrip plugin that allows you to transform up to 6 of your DOM
+            blocks into an interactive 3d Cube!
+          </p>
+          <p>For example! Here we have 6 blocks we wish to make a cube:</p>
+          <div class="example-block__container">
+            <div class="example-block example-block__front">
+              FRONT-FACE BLOCK
+            </div>
+            <div class="example-block example-block__back">BACK-FACE BLOCK</div>
+            <div class="example-block example-block__top">TOP-FACE BLOCK</div>
+            <div class="example-block example-block__bottom">
+              BOTTOM-FACE BLOCK
+            </div>
+            <div class="example-block example-block__left">LEFT-FACE BLOCK</div>
+            <div class="example-block example-block__right">
+              RIGHT-FACE BLOCK
+            </div>
+          </div>
 
-        const cubeTest = new Cubify(front, {
-          faces: {
-            back: back,
-            top: topFace,
-            left: left,
-            right: right,
-            bottom: bottom
-          },
-          interactive: true,
-          onlyY: false
-        });
-      })();
-    </script>
+          <p>Now, all we have to do is add cubify script into our head tag:</p>
+          <pre>
+<code class="language-html">&lt;script src=<span class="code__in-quotes"
+                >"YOUR__PATH/cubify.js"</span
+              >&gt;&lt;/script&gt;</code></pre>
+
+          <p>
+            Then, initiate a new Cubify instance, passing those blocks in the
+            constructor like this:
+          </p>
+
+          <pre><code class="language-js">const front =  document.querySelector(".example-block__front");
+const back =  document.querySelector(".example-block__back"); 
+const top = document.querySelector(".example-block__top"); 
+const bottom = document.querySelector(".example-block__bottom"); 
+const left = document.querySelector(".example-block__left"); 
+const right = document.querySelector(".example-block__right"); 
+
+const exampleCube = new Cubify( front, /* front face as first param */
+{ /* options object */ 
+  faces: {
+    back: back,
+    top: top,
+    bottom: bottom,
+    left: left,
+    right: right
+  },
+  interactive: true
+})</code></pre>
+          <p>And the result we get is:</p>
+          <div class="example-block__container">
+            <div class="example-block example-block__front example1">
+              FRONT-FACE BLOCK
+            </div>
+            <div class="example-block example-block__back example1">
+              BACK-FACE BLOCK
+            </div>
+            <div class="example-block example-block__top example1">
+              TOP-FACE BLOCK
+            </div>
+            <div class="example-block example-block__bottom example1">
+              BOTTOM-FACE BLOCK
+            </div>
+            <div class="example-block example-block__left example1">
+              LEFT-FACE BLOCK
+            </div>
+            <div class="example-block example-block__right example1">
+              RIGHT-FACE BLOCK
+            </div>
+          </div>
+          <script>
+            (function() {
+              const front = document.querySelector(
+                ".example-block__front.example1"
+              );
+              const back = document.querySelector(
+                ".example-block__back.example1"
+              );
+              const top = document.querySelector(
+                ".example-block__top.example1"
+              );
+              const bottom = document.querySelector(
+                ".example-block__bottom.example1"
+              );
+              const left = document.querySelector(
+                ".example-block__left.example1"
+              );
+              const right = document.querySelector(
+                ".example-block__right.example1"
+              );
+
+              const exampleCube = new Cubify(front, {
+                faces: {
+                  back: back,
+                  top: top,
+                  bottom: bottom,
+                  left: left,
+                  right: right
+                },
+                interactive: true
+              });
+            })();
+          </script>
+        </div>
+      </section>
+      <section class="Options">
+        <div class="container">
+          <h3>Options</h3>
+          <p>
+            Options are set inside the second parameter of the Cubify class
+            constructor function:
+          </p>
+          <pre><code class="language-js">const exampleCube = new Cubify( firstParameter /* front face of the cube */, 
+{ /* options object */ })</code></pre>
+          <p>Here are the available options:</p>
+          <p class="option__row"><b class="option_name">faces</b> : object</p>
+          <p>
+            With <b class="option_name">faces</b> you can pass the needed
+            elements as cube's 5 remainind faces, like that:
+          </p>
+          <pre><code class="language-js">{ /* options object */ 
+    faces{
+      back: /* YOUR__ELEMENT */,
+      top: /* YOUR__ELEMENT */,
+      bottom: /* YOUR__ELEMENT */,
+      left: /* YOUR__ELEMENT */,
+      right: /* YOUR__ELEMENT */
+    }
+})</code></pre>
+          <p>As evident, has 5 keys: <b>top, bottom, left, right, back</b></p>
+          <p class="option__row">
+            <b class="option_name">interactive</b> : boolean (default :
+            <b>false</b>)
+          </p>
+          <p>An option to allow user to rotate the cube with mouse.</p>
+          <p class="option__row">
+            <b class="option_name">width</b> : number (default : - largest
+            dimension (meaning height or width) of all passed DIVs)
+          </p>
+          <p>The width, height and depth of the cube in <b>pixels</b>.</p>
+          <p class="option__row">
+            <b class="option_name">onlyX / onlyY</b> : boolean (default :
+            <b>false</b>)
+          </p>
+          <p>
+            Allow only one axis rotation in an interactive mode. With both set
+            to true: X has priority, while Y is ignored.
+          </p>
+          <!-- ONLY X EXAMPLE CUBE -->
+          <p><b>Only X:</b></p>
+          <div class="example-block__container">
+            <div class="example-block example-block__front example2">
+              FRONT-FACE BLOCK
+            </div>
+            <div class="example-block example-block__back example2">
+              BACK-FACE BLOCK
+            </div>
+            <div class="example-block example-block__top example2">
+              TOP-FACE BLOCK
+            </div>
+            <div class="example-block example-block__bottom example2">
+              BOTTOM-FACE BLOCK
+            </div>
+            <div class="example-block example-block__left example2">
+              LEFT-FACE BLOCK
+            </div>
+            <div class="example-block example-block__right example2">
+              RIGHT-FACE BLOCK
+            </div>
+          </div>
+          <script>
+            (function() {
+              const front = document.querySelector(
+                ".example-block__front.example2"
+              );
+              const back = document.querySelector(
+                ".example-block__back.example2"
+              );
+              const top = document.querySelector(
+                ".example-block__top.example2"
+              );
+              const bottom = document.querySelector(
+                ".example-block__bottom.example2"
+              );
+              const left = document.querySelector(
+                ".example-block__left.example2"
+              );
+              const right = document.querySelector(
+                ".example-block__right.example2"
+              );
+
+              const exampleCube = new Cubify(front, {
+                faces: {
+                  back: back,
+                  top: top,
+                  bottom: bottom,
+                  left: left,
+                  right: right
+                },
+                interactive: true,
+                onlyX: true
+              });
+            })();
+          </script>
+          <!-- ONLY X EXAMPLE CUBE END -->
+          <!-- ONLY Y EXAMPLE CUBE -->
+          <p><b>Only Y:</b></p>
+          <div class="example-block__container">
+            <div class="example-block example-block__front example3">
+              FRONT-FACE BLOCK
+            </div>
+            <div class="example-block example-block__back example3">
+              BACK-FACE BLOCK
+            </div>
+            <div class="example-block example-block__top example3">
+              TOP-FACE BLOCK
+            </div>
+            <div class="example-block example-block__bottom example3">
+              BOTTOM-FACE BLOCK
+            </div>
+            <div class="example-block example-block__left example3">
+              LEFT-FACE BLOCK
+            </div>
+            <div class="example-block example-block__right example3">
+              RIGHT-FACE BLOCK
+            </div>
+          </div>
+          <script>
+            (function() {
+              const front = document.querySelector(
+                ".example-block__front.example3"
+              );
+              const back = document.querySelector(
+                ".example-block__back.example3"
+              );
+              const top = document.querySelector(
+                ".example-block__top.example3"
+              );
+              const bottom = document.querySelector(
+                ".example-block__bottom.example3"
+              );
+              const left = document.querySelector(
+                ".example-block__left.example3"
+              );
+              const right = document.querySelector(
+                ".example-block__right.example3"
+              );
+
+              const exampleCube = new Cubify(front, {
+                faces: {
+                  back: back,
+                  top: top,
+                  bottom: bottom,
+                  left: left,
+                  right: right
+                },
+                interactive: true,
+                onlyY: true
+              });
+            })();
+          </script>
+          <!-- ONLY Y EXAMPLE CUBE END -->
+        </div>
+      </section>
+      <section><div class="container"></div></section>
+      <section><div class="container"></div></section>
+    </main>
+    <footer>
+      <div class="container">
+        <p>© MarvinJan 2019</p>
+      </div>
+    </footer>
+    <script src="public/js/prism.js"></script>
   </body>
+  <script>
+    (function() {
+      const front = document.querySelector(".header__logo__q");
+      const right = document.querySelector(".header__logo__b");
+      const top = document.querySelector(".header__logo__fy");
+      const logo = new Cubify(front, {
+        interactive: false,
+        faces: {
+          right: right,
+          top: top
+        }
+      });
+      document.addEventListener("DOMContentLoaded", () => {
+        const headerCube = document.querySelector(".cubify__cube");
+        const headerCubeFaces = headerCube.querySelectorAll(".cubify__face");
+        headerCube.classList.add("animated");
+        headerCubeFaces.forEach(face => {
+          const priority = face.getAttribute("data-priority");
+          face.style.animationDelay = `${0.4 * priority}s`;
+          face.classList.add("animated");
+        });
+      });
+    })();
+  </script>
 </html>
