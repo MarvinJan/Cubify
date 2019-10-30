@@ -55,13 +55,13 @@ footer {
   width: 150px;
   height: 150px;
   font-family: "Orbitron", sans-serif;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 5em;
   color: #1af;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 0 1px, 0 0 0 3px inset;
+  /* box-shadow: 0 0 0 1px, 0 0 0 3px inset; */
   /* border-radius: 10px; */
   background: #fff;
   user-select: none;
