@@ -1,17 +1,16 @@
 class Cubify {
-  constructor(
-    front,
-    options = {
-      interactive: false
-    }
-  ) {
+  constructor(front, options) {
+    // set options
     this.front = front;
     this.faces = options.faces || {};
     this.width = options.width || this.getDefaultWidth();
-    this.parent = this.front.parentNode;
-    this.bgColor = this.getBackgroundColor();
     this.onlyX = options.onlyX || false;
     this.onlyY = !!options.onlyX ? false : options.onlyY || false;
+    this.interactive = options.interactive || false;
+    this.snap = options.snap || true;
+
+    this.parent = this.front.parentNode;
+    this.bgColor = this.getBackgroundColor();
     this.commonStyle = {
       width: `${this.width}px`,
       height: `${this.width}px`
@@ -28,7 +27,6 @@ class Cubify {
       transform: `translateZ(-${this.width / 2}px)`,
       "transform-style": `preserve-3d`
     };
-    this.interactive = options.interactive;
     this.renderCube();
     if (options.interactive) {
       (this.angleX = 0), (this.angleY = 0);
@@ -119,9 +117,7 @@ class Cubify {
   renderCube() {
     this.parent.append(this.composeCube());
   }
-  rotateCube(event, x, y) {
-    event.preventDefault();
-
+  calculateDeltaAngles(event, x, y) {
     let deltaX = 0;
     let deltaY = 0;
 
@@ -134,11 +130,32 @@ class Cubify {
     }
     const deltaAngleX = this.angleX - deltaX / 2;
     const deltaAngleY = this.angleY + deltaY / 2;
-    this.cube.style.transform = `translateZ(-${this.width /
-      2}px) rotateY(${deltaAngleX}deg) rotateX(${deltaAngleY}deg)`;
+
     return [deltaAngleX, deltaAngleY];
   }
+  rotateCube(newAngleX, newAngleY) {
+    this.cube.style.transform = `translateZ(-${this.width /
+      2}px) rotateY(${newAngleX}deg) rotateX(${newAngleY}deg)`;
+  }
+  snapAngles(deltaAngleX, deltaAngleY) {
+    let calcSnapped = angle => {
+      let remainder = angle % 90;
+      let snappedAngle =
+        Math.abs(remainder) > 45
+          ? (90 - Math.abs(remainder)) * (remainder / Math.abs(remainder))
+          : -remainder;
+      return snappedAngle;
+    };
+    let snappedDeltaX = calcSnapped(deltaAngleX);
+    let snappedDeltaY = calcSnapped(deltaAngleY);
 
+    deltaAngleX += snappedDeltaX;
+    deltaAngleY += snappedDeltaY;
+
+    this.rotateCube(deltaAngleX, deltaAngleY);
+
+    return [deltaAngleX, deltaAngleY];
+  }
   setAngles(deltaAngleX, deltaAngleY) {
     if (!this.onlyY) this.angleX = deltaAngleX;
     if (!this.onlyX) this.angleY = deltaAngleY;
@@ -150,15 +167,21 @@ class Cubify {
         e.preventDefault();
         const x0 = e.touches[0].clientX;
         const y0 = e.touches[0].clientY;
-        let deltaAngles;
-        const rotate = event => (deltaAngles = this.rotateCube(event, x0, y0));
-        const onDone = () => {
-          if (!!deltaAngles) this.setAngles(...deltaAngles);
-          document.removeEventListener("touchmove", rotate);
-          document.removeEventListener("touchend", onDone);
+
+        let deltaAngles = this.calculateDeltaAngles(e, x0, y0);
+
+        const rotate = event => {
+          this.rotateCube(...deltaAngles);
+          deltaAngles = this.calculateDeltaAngles(event, x0, y0);
         };
-        document.addEventListener("touchmove", rotate, { passive: false });
-        document.addEventListener("touchend", onDone);
+        const onDone = () => {
+          if (!!this.snap) deltaAngles = this.snapAngles(...deltaAngles);
+          if (!!deltaAngles) this.setAngles(...deltaAngles);
+          document.removeEventListener("mousemove", rotate);
+          document.removeEventListener("mouseup", onDone);
+        };
+        document.addEventListener("mousemove", rotate);
+        document.addEventListener("mouseup", onDone);
       },
       { passive: false }
     );
@@ -167,9 +190,15 @@ class Cubify {
       e.preventDefault();
       const x0 = e.clientX;
       const y0 = e.clientY;
-      let deltaAngles;
-      const rotate = event => (deltaAngles = this.rotateCube(event, x0, y0));
+
+      let deltaAngles = this.calculateDeltaAngles(e, x0, y0);
+
+      const rotate = event => {
+        this.rotateCube(...deltaAngles);
+        deltaAngles = this.calculateDeltaAngles(event, x0, y0);
+      };
       const onDone = () => {
+        if (!!this.snap) deltaAngles = this.snapAngles(...deltaAngles);
         if (!!deltaAngles) this.setAngles(...deltaAngles);
         document.removeEventListener("mousemove", rotate);
         document.removeEventListener("mouseup", onDone);
