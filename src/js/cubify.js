@@ -145,7 +145,7 @@ class Cubify {
         listenerCallback
       );
       document.removeEventListener(
-        event.type === "mouseup" ? "mouseup" : "touchenf",
+        event.type === "mouseup" ? "mouseup" : "touchend",
         listenerCallback
       );
       if (!!this.snap) deltaAngles = this.snapAngles(...deltaAngles);
