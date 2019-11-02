@@ -7,7 +7,7 @@ class Cubify {
     this.onlyX = options.onlyX || false;
     this.onlyY = !!options.onlyX ? false : options.onlyY || false;
     this.interactive = options.interactive || false;
-    this.snap = options.snap || true;
+    this.snap = options.snap || false;
 
     this.parent = this.front.parentNode;
     this.bgColor = this.getBackgroundColor();

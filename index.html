@@ -296,6 +296,67 @@ const exampleCube = new Cubify( front, /* front face as first param */
             })();
           </script>
           <!-- ONLY Y EXAMPLE CUBE END -->
+          <!-- SNAPPING CUBE EXAMPLE START -->
+          <p class="option__row">
+            <b class="option_name">snap</b> : boolean (default : <b>false</b>)
+          </p>
+          <p>Snap cube to closest edge on drag release</p>
+          <p><b>Snapping cube example:</b></p>
+          <div class="example-block__container">
+            <div class="example-block example-block__front example4">
+              FRONT-FACE BLOCK
+            </div>
+            <div class="example-block example-block__back example4">
+              BACK-FACE BLOCK
+            </div>
+            <div class="example-block example-block__top example4">
+              TOP-FACE BLOCK
+            </div>
+            <div class="example-block example-block__bottom example4">
+              BOTTOM-FACE BLOCK
+            </div>
+            <div class="example-block example-block__left example4">
+              LEFT-FACE BLOCK
+            </div>
+            <div class="example-block example-block__right example3">
+              RIGHT-FACE BLOCK
+            </div>
+          </div>
+          <script>
+            (function() {
+              const front = document.querySelector(
+                ".example-block__front.example4"
+              );
+              const back = document.querySelector(
+                ".example-block__back.example4"
+              );
+              const top = document.querySelector(
+                ".example-block__top.example4"
+              );
+              const bottom = document.querySelector(
+                ".example-block__bottom.example4"
+              );
+              const left = document.querySelector(
+                ".example-block__left.example4"
+              );
+              const right = document.querySelector(
+                ".example-block__right.example4"
+              );
+
+              const exampleCube = new Cubify(front, {
+                faces: {
+                  back: back,
+                  top: top,
+                  bottom: bottom,
+                  left: left,
+                  right: right
+                },
+                interactive: true,
+                snap: true
+              });
+            })();
+          </script>
+          <!-- SNAPPING CUBE EXAMPLE END -->
         </div>
       </section>
       <section><div class="container"></div></section>
