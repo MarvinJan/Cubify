@@ -121,9 +121,9 @@ class Cubify {
     let deltaX = 0;
     let deltaY = 0;
 
-    if (event.type === "touchmove") {
-      if (!this.onlyY) deltaX = x - event.touches[0].clientX;
-      if (!this.onlyX) deltaY = y - event.touches[0].clientY;
+    if (event.type === "touchmove" || event.type === "touchend") {
+      if (!this.onlyY) deltaX = x - event.changedTouches[0].clientX;
+      if (!this.onlyX) deltaY = y - event.changedTouches[0].clientY;
     } else {
       if (!this.onlyY) deltaX = x - event.clientX;
       if (!this.onlyX) deltaY = y - event.clientY;
@@ -151,6 +151,7 @@ class Cubify {
       if (!!this.snap) deltaAngles = this.snapAngles(...deltaAngles);
       return this.setAngles(...deltaAngles);
     }
+
     this.renderNewAngles(...deltaAngles);
   }
   snapAngles(deltaAngleX, deltaAngleY) {
@@ -183,7 +184,7 @@ class Cubify {
         e.preventDefault();
         const x0 = e.touches[0].clientX;
         const y0 = e.touches[0].clientY;
-
+        console.log("touchstart");
         let rotate = event => this.rotate(event, x0, y0, rotate);
 
         document.addEventListener("touchmove", rotate);
