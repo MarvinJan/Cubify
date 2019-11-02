@@ -133,9 +133,25 @@ class Cubify {
 
     return [deltaAngleX, deltaAngleY];
   }
-  rotateCube(newAngleX, newAngleY) {
+  renderNewAngles(newAngleX, newAngleY) {
     this.cube.style.transform = `translateZ(-${this.width /
       2}px) rotateY(${newAngleX}deg) rotateX(${newAngleY}deg)`;
+  }
+  rotate(event, x0, y0, listenerCallback) {
+    let deltaAngles = this.calculateDeltaAngles(event, x0, y0);
+    if (event.type === "mouseup" || event.type === "touchend") {
+      document.removeEventListener(
+        event.type === "mouseup" ? "mousemove" : "touchmove",
+        listenerCallback
+      );
+      document.removeEventListener(
+        event.type === "mouseup" ? "mouseup" : "touchenf",
+        listenerCallback
+      );
+      if (!!this.snap) deltaAngles = this.snapAngles(...deltaAngles);
+      return this.setAngles(...deltaAngles);
+    }
+    this.renderNewAngles(...deltaAngles);
   }
   snapAngles(deltaAngleX, deltaAngleY) {
     let calcSnapped = angle => {
@@ -152,7 +168,7 @@ class Cubify {
     deltaAngleX += snappedDeltaX;
     deltaAngleY += snappedDeltaY;
 
-    this.rotateCube(deltaAngleX, deltaAngleY);
+    this.renderNewAngles(deltaAngleX, deltaAngleY);
 
     return [deltaAngleX, deltaAngleY];
   }
@@ -168,20 +184,10 @@ class Cubify {
         const x0 = e.touches[0].clientX;
         const y0 = e.touches[0].clientY;
 
-        let deltaAngles = this.calculateDeltaAngles(e, x0, y0);
+        let rotate = event => this.rotate(event, x0, y0, rotate);
 
-        const rotate = event => {
-          this.rotateCube(...deltaAngles);
-          deltaAngles = this.calculateDeltaAngles(event, x0, y0);
-        };
-        const onDone = () => {
-          if (!!this.snap) deltaAngles = this.snapAngles(...deltaAngles);
-          if (!!deltaAngles) this.setAngles(...deltaAngles);
-          document.removeEventListener("touchmove", rotate);
-          document.removeEventListener("touchend", onDone);
-        };
         document.addEventListener("touchmove", rotate);
-        document.addEventListener("touchend", onDone);
+        document.addEventListener("touchend", rotate);
       },
       { passive: false }
     );
@@ -191,20 +197,10 @@ class Cubify {
       const x0 = e.clientX;
       const y0 = e.clientY;
 
-      let deltaAngles = this.calculateDeltaAngles(e, x0, y0);
+      let rotate = event => this.rotate(event, x0, y0, rotate);
 
-      const rotate = event => {
-        this.rotateCube(...deltaAngles);
-        deltaAngles = this.calculateDeltaAngles(event, x0, y0);
-      };
-      const onDone = () => {
-        if (!!this.snap) deltaAngles = this.snapAngles(...deltaAngles);
-        if (!!deltaAngles) this.setAngles(...deltaAngles);
-        document.removeEventListener("mousemove", rotate);
-        document.removeEventListener("mouseup", onDone);
-      };
       document.addEventListener("mousemove", rotate);
-      document.addEventListener("mouseup", onDone);
+      document.addEventListener("mouseup", rotate);
     });
   }
 }
