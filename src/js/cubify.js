@@ -177,11 +177,11 @@ class Cubify {
         const onDone = () => {
           if (!!this.snap) deltaAngles = this.snapAngles(...deltaAngles);
           if (!!deltaAngles) this.setAngles(...deltaAngles);
-          document.removeEventListener("mousemove", rotate);
-          document.removeEventListener("mouseup", onDone);
+          document.removeEventListener("touchmove", rotate);
+          document.removeEventListener("touchend", onDone);
         };
-        document.addEventListener("mousemove", rotate);
-        document.addEventListener("mouseup", onDone);
+        document.addEventListener("touchmove", rotate);
+        document.addEventListener("touchend", onDone);
       },
       { passive: false }
     );
